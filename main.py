@@ -7,10 +7,8 @@ from collections import defaultdict
 import random
 
 model=YOLO('yolov9c.pt')
-
 class_list = ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'bottle', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed', 'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
-
-cap = cv2.VideoCapture('traffic.mp4')
+cap = cv2.VideoCapture('data/traffic.mp4')
 
 track_history = defaultdict(lambda: [])
 track_colors = defaultdict(lambda: (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
@@ -23,11 +21,8 @@ incoming_line_x_range = (10, 600)
 outgoing_line_x_range = (700, 1270)
 offset = 7
 
-# fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # You can also try 'avc1' if 'mp4v' doesn't work
-# out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (int(cap.get(3)), int(cap.get(4))))
-
-fourcc = cv2.VideoWriter_fourcc(*'avc1')  # Use H.264 codec
-out = cv2.VideoWriter('output.mp4', fourcc, 60, (1280, 720))
+fourcc = cv2.VideoWriter_fourcc(*'avc1')
+out = cv2.VideoWriter('Highway Analysis.mp4', fourcc, 60, (1280, 720))
 
 while True:
     ret, frame = cap.read()
@@ -59,7 +54,6 @@ while True:
             if incoming_line_x_range[0] <= cx <= incoming_line_x_range[1] and line_level - offset < cy < line_level + offset:
                 counter_incoming.add(track_id)
 
-            # Check for crossing the outgoing line
             if outgoing_line_x_range[0] <= cx <= outgoing_line_x_range[1] and line_level - offset < cy < line_level + offset:
                 counter_outgoing.add(track_id)
 
