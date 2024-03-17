@@ -1,7 +1,6 @@
 import cv2
 import pandas as pd
 from ultralytics import YOLO
-from tracker import*
 import numpy as np
 from collections import defaultdict
 import random
